@@ -1,0 +1,379 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<SchemaFile xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<dataCompositionSchema xmlns="http://v8.1c.ru/8.1/data-composition-system/schema">
+		<dataSource>
+			<name>ИсточникДанных1</name>
+			<dataSourceType>Local</dataSourceType>
+		</dataSource>
+		<dataSet xsi:type="DataSetQuery">
+			<name>НаборДанных1</name>
+			<field xsi:type="DataSetFieldField">
+				<dataPath>ПериодПотока</dataPath>
+				<field>ПериодПотока</field>
+				<title xmlns:d5p1="http://v8.1c.ru/8.1/data/core" xsi:type="d5p1:LocalStringType">
+					<d5p1:item>
+						<d5p1:lang>ru</d5p1:lang>
+						<d5p1:content>Период потока</d5p1:content>
+					</d5p1:item>
+				</title>
+				<appearance/>
+				<inputParameters/>
+			</field>
+			<field xsi:type="DataSetFieldField">
+				<dataPath>ЭтапПорядок</dataPath>
+				<field>ЭтапПорядок</field>
+				<appearance/>
+				<inputParameters/>
+			</field>
+			<field xsi:type="DataSetFieldField">
+				<dataPath>Решение</dataPath>
+				<field>Решение</field>
+				<appearance>
+					<item xmlns="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xsi:type="dcsset:SettingsParameterValue">
+						<parameter>Формат</parameter>
+						<value xmlns:d7p1="http://v8.1c.ru/8.1/data/core" xsi:type="d7p1:LocalStringType">
+							<d7p1:item>
+								<d7p1:lang>ru</d7p1:lang>
+								<d7p1:content>БЛ='не сдано'; БИ=сдано</d7p1:content>
+							</d7p1:item>
+						</value>
+					</item>
+				</appearance>
+				<inputParameters/>
+			</field>
+			<field xsi:type="DataSetFieldField">
+				<dataPath>Аккредитуемый</dataPath>
+				<field>Аккредитуемый</field>
+				<role>
+					<dimension xmlns="http://v8.1c.ru/8.1/data-composition-system/common">true</dimension>
+				</role>
+				<appearance/>
+				<inputParameters/>
+			</field>
+			<field xsi:type="DataSetFieldField">
+				<dataPath>Этап</dataPath>
+				<field>Этап</field>
+				<role>
+					<dimension xmlns="http://v8.1c.ru/8.1/data-composition-system/common">true</dimension>
+				</role>
+				<presentationExpression>Представление(Этап) + "/" + ДатаПроведения</presentationExpression>
+				<appearance/>
+				<inputParameters/>
+			</field>
+			<field xsi:type="DataSetFieldField">
+				<dataPath>НомерПопыткиРегл</dataPath>
+				<field>НомерПопыткиРегл</field>
+				<appearance/>
+				<inputParameters/>
+			</field>
+			<field xsi:type="DataSetFieldField">
+				<dataPath>Комиссия</dataPath>
+				<field>Комиссия</field>
+				<role>
+					<dimension xmlns="http://v8.1c.ru/8.1/data-composition-system/common">true</dimension>
+				</role>
+				<appearance/>
+				<inputParameters/>
+			</field>
+			<field xsi:type="DataSetFieldField">
+				<dataPath>ДатаПроведения</dataPath>
+				<field>ДатаПроведения</field>
+				<appearance/>
+				<inputParameters/>
+			</field>
+			<field xsi:type="DataSetFieldField">
+				<dataPath>Результат</dataPath>
+				<field>Результат</field>
+				<appearance/>
+				<inputParameters/>
+			</field>
+			<field xsi:type="DataSetFieldField">
+				<dataPath>Поток</dataPath>
+				<field>Поток</field>
+				<appearance/>
+				<inputParameters/>
+			</field>
+			<field xsi:type="DataSetFieldField">
+				<dataPath>ПопыткаСдачи</dataPath>
+				<field>ПопыткаСдачи</field>
+				<appearance/>
+				<inputParameters/>
+			</field>
+			<dataSource>ИсточникДанных1</dataSource>
+			<query>ВЫБРАТЬ РАЗРЕШЕННЫЕ РАЗЛИЧНЫЕ
+	ПерсональныеДатыАккредитации.ДатаПроведения КАК ДатаПроведения,
+	ПерсональныеДатыАккредитации.Комиссия КАК Комиссия,
+	ПерсональныеДатыАккредитации.Аккредитуемый КАК Аккредитуемый,
+	ПерсональныеДатыАккредитации.Этап КАК Этап,
+	ПерсональныеДатыАккредитации.Этап.Порядок КАК ЭтапПорядок,
+	ПотокиАккредитуемых.Поток КАК Поток,
+	ПотокиАккредитуемых.Период КАК ПериодПотока,
+	ПерсональныеДатыАккредитации.НомерПопыткиРегл КАК НомерПопыткиРегл,
+	ПерсональныеДатыАккредитации.ПопыткаСдачи КАК ПопыткаСдачи
+ПОМЕСТИТЬ ВТ_Источник
+ИЗ
+	РегистрСведений.ПерсональныеДатыАккредитации КАК ПерсональныеДатыАккредитации
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ПотокиАккредитуемых КАК ПотокиАккредитуемых
+		ПО ПерсональныеДатыАккредитации.Комиссия = ПотокиАккредитуемых.Комиссия
+			И ПерсональныеДатыАккредитации.Аккредитуемый = ПотокиАккредитуемых.Аккредитуемый
+			И ПерсональныеДатыАккредитации.Период &gt;= ПотокиАккредитуемых.Период
+			И (ПерсональныеДатыАккредитации.Активность)
+			И (ПотокиАккредитуемых.Активность)
+ГДЕ
+	ПотокиАккредитуемых.Аккредитуемый = &amp;Аккредитуемый
+	И ПерсональныеДатыАккредитации.Аккредитуемый = &amp;Аккредитуемый
+	И ПотокиАккредитуемых.Период &lt;= &amp;Период
+	И ПерсональныеДатыАккредитации.Период &lt;= &amp;Период
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_Источник.ДатаПроведения КАК ДатаПроведения,
+	ВТ_Источник.Комиссия КАК Комиссия,
+	ВТ_Источник.Аккредитуемый КАК Аккредитуемый,
+	ВТ_Источник.Этап КАК Этап,
+	ВТ_Источник.ЭтапПорядок КАК ЭтапПорядок,
+	ВТ_Источник.Поток КАК Поток,
+	ВТ_Источник.ПериодПотока КАК ПериодПотока,
+	РешенияКомиссииПоТестированию.Решение КАК Решение,
+	РешенияКомиссииПоТестированию.Результат КАК Результат,
+	ВТ_Источник.НомерПопыткиРегл КАК НомерПопыткиРегл,
+	ВТ_Источник.ПопыткаСдачи КАК ПопыткаСдачи
+ПОМЕСТИТЬ ВТ_Результаты
+ИЗ
+	ВТ_Источник КАК ВТ_Источник
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.РешенияКомиссииПоТестированию КАК РешенияКомиссииПоТестированию
+		ПО ВТ_Источник.Комиссия = РешенияКомиссииПоТестированию.Комиссия
+			И ВТ_Источник.Аккредитуемый = РешенияКомиссииПоТестированию.Аккредитуемый
+			И (ВТ_Источник.Этап = ЗНАЧЕНИЕ(Перечисление.ЭтапыАккредитации.Тестирование))
+			И ВТ_Источник.НомерПопыткиРегл = РешенияКомиссииПоТестированию.ПопыткаСдачи
+			И (НАЧАЛОПЕРИОДА(ВТ_Источник.ДатаПроведения, ДЕНЬ) = НАЧАЛОПЕРИОДА(РешенияКомиссииПоТестированию.Период, ДЕНЬ))
+			И ВТ_Источник.Поток = РешенияКомиссииПоТестированию.Поток
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	ВТ_Источник.ДатаПроведения,
+	ВТ_Источник.Комиссия,
+	ВТ_Источник.Аккредитуемый,
+	ВТ_Источник.Этап,
+	ВТ_Источник.ЭтапПорядок,
+	ВТ_Источник.Поток,
+	ВТ_Источник.ПериодПотока,
+	РешенияКомиссииПоОценкеПрактическихНавыков.Решение,
+	РешенияКомиссииПоОценкеПрактическихНавыков.Результат,
+	ВТ_Источник.НомерПопыткиРегл,
+	ВТ_Источник.ПопыткаСдачи
+ИЗ
+	ВТ_Источник КАК ВТ_Источник
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.РешенияКомиссииПоОценкеПрактическихНавыков КАК РешенияКомиссииПоОценкеПрактическихНавыков
+		ПО ВТ_Источник.Комиссия = РешенияКомиссииПоОценкеПрактическихНавыков.Комиссия
+			И ВТ_Источник.Аккредитуемый = РешенияКомиссииПоОценкеПрактическихНавыков.Аккредитуемый
+			И ВТ_Источник.НомерПопыткиРегл = РешенияКомиссииПоОценкеПрактическихНавыков.ПопыткаСдачи
+			И (ВТ_Источник.Этап = ЗНАЧЕНИЕ(Перечисление.ЭтапыАккредитации.ПодтверждениеПрофессиональныхНавыковИУмений))
+			И (НАЧАЛОПЕРИОДА(ВТ_Источник.ДатаПроведения, ДЕНЬ) = НАЧАЛОПЕРИОДА(РешенияКомиссииПоОценкеПрактическихНавыков.Период, ДЕНЬ))
+			И ВТ_Источник.Поток = РешенияКомиссииПоОценкеПрактическихНавыков.Поток
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	ВТ_Источник.ДатаПроведения,
+	ВТ_Источник.Комиссия,
+	ВТ_Источник.Аккредитуемый,
+	ВТ_Источник.Этап,
+	ВТ_Источник.ЭтапПорядок,
+	ВТ_Источник.Поток,
+	ВТ_Источник.ПериодПотока,
+	РешенияКомиссииПоСитуационнымЗадачам.Решение,
+	РешенияКомиссииПоСитуационнымЗадачам.Результат,
+	ВТ_Источник.НомерПопыткиРегл,
+	ВТ_Источник.ПопыткаСдачи
+ИЗ
+	ВТ_Источник КАК ВТ_Источник
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.РешенияКомиссииПоСитуационнымЗадачам КАК РешенияКомиссииПоСитуационнымЗадачам
+		ПО ВТ_Источник.Комиссия = РешенияКомиссииПоСитуационнымЗадачам.Комиссия
+			И ВТ_Источник.Аккредитуемый = РешенияКомиссииПоСитуационнымЗадачам.Аккредитуемый
+			И ВТ_Источник.НомерПопыткиРегл = РешенияКомиссииПоСитуационнымЗадачам.ПопыткаСдачи
+			И (ВТ_Источник.Этап = ЗНАЧЕНИЕ(Перечисление.ЭтапыАккредитации.РешениеСитуационныхЗадач))
+			И (НАЧАЛОПЕРИОДА(ВТ_Источник.ДатаПроведения, ДЕНЬ) = НАЧАЛОПЕРИОДА(РешенияКомиссииПоСитуационнымЗадачам.Период, ДЕНЬ))
+			И ВТ_Источник.Поток = РешенияКомиссииПоСитуационнымЗадачам.Поток
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ РАЗЛИЧНЫЕ
+	ВТ_Результаты.ДатаПроведения КАК ДатаПроведения,
+	ВТ_Результаты.Комиссия КАК Комиссия,
+	ВТ_Результаты.Аккредитуемый КАК Аккредитуемый,
+	ВТ_Результаты.Этап КАК Этап,
+	ВТ_Результаты.ЭтапПорядок КАК ЭтапПорядок,
+	ВТ_Результаты.Поток КАК Поток,
+	ВТ_Результаты.ПериодПотока КАК ПериодПотока,
+	ВТ_Результаты.Решение КАК Решение,
+	ВТ_Результаты.Результат КАК Результат,
+	ВТ_Результаты.НомерПопыткиРегл КАК НомерПопыткиРегл,
+	ВТ_Результаты.ПопыткаСдачи КАК ПопыткаСдачи
+ИЗ
+	ВТ_Результаты КАК ВТ_Результаты</query>
+		</dataSet>
+		<parameter>
+			<name>Аккредитуемый</name>
+			<title xmlns:d4p1="http://v8.1c.ru/8.1/data/core" xsi:type="d4p1:LocalStringType">
+				<d4p1:item>
+					<d4p1:lang>ru</d4p1:lang>
+					<d4p1:content>Аккредитуемый</d4p1:content>
+				</d4p1:item>
+			</title>
+			<valueType>
+				<TypeId xmlns="http://v8.1c.ru/8.1/data/core">f86ad68c-10a1-4f89-a424-5d3b2223d4eb</TypeId>
+			</valueType>
+			<value xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xsi:type="dcscor:DesignTimeValue"/>
+			<useRestriction>true</useRestriction>
+			<inputParameters/>
+		</parameter>
+		<parameter>
+			<name>Период</name>
+			<title xmlns:d4p1="http://v8.1c.ru/8.1/data/core" xsi:type="d4p1:LocalStringType">
+				<d4p1:item>
+					<d4p1:lang>ru</d4p1:lang>
+					<d4p1:content>Период</d4p1:content>
+				</d4p1:item>
+			</title>
+			<valueType>
+				<Type xmlns="http://v8.1c.ru/8.1/data/core">xs:dateTime</Type>
+				<DateQualifiers xmlns="http://v8.1c.ru/8.1/data/core">
+					<DateFractions>DateTime</DateFractions>
+				</DateQualifiers>
+			</valueType>
+			<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+			<useRestriction>true</useRestriction>
+			<inputParameters/>
+		</parameter>
+		<settingsVariant>
+			<name xmlns="http://v8.1c.ru/8.1/data-composition-system/settings">Основной</name>
+			<presentation xmlns="http://v8.1c.ru/8.1/data-composition-system/settings" xsi:type="xs:string">Основной</presentation>
+		</settingsVariant>
+	</dataCompositionSchema>
+</SchemaFile>﻿<?xml version="1.0" encoding="UTF-8"?>
+<Settings xmlns="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<selection>
+		<item xsi:type="SelectedItemField">
+			<field>Результат</field>
+		</item>
+		<item xsi:type="SelectedItemField">
+			<field>Решение</field>
+		</item>
+		<item xsi:type="SelectedItemField">
+			<field>ПопыткаСдачи</field>
+		</item>
+		<userSettingID>3f6311cc-dd7c-454c-a48a-173afc08b877</userSettingID>
+	</selection>
+	<filter>
+		<userSettingID>caf9a7bf-bcd1-45da-a927-3bd0168a8b2d</userSettingID>
+	</filter>
+	<dataParameters>
+		<dcscor:item xsi:type="SettingsParameterValue">
+			<dcscor:use>false</dcscor:use>
+			<dcscor:parameter>Аккредитуемый</dcscor:parameter>
+			<dcscor:value xsi:nil="true"/>
+			<userSettingID>2091fd45-6e42-48a2-8b1b-960751420ffc</userSettingID>
+		</dcscor:item>
+		<dcscor:item xsi:type="SettingsParameterValue">
+			<dcscor:use>false</dcscor:use>
+			<dcscor:parameter>Период</dcscor:parameter>
+			<dcscor:value xsi:type="xs:dateTime">0001-01-01T00:00:00</dcscor:value>
+			<userSettingID>00d8319a-ddc1-4a57-8f80-77eac4bc37b1</userSettingID>
+		</dcscor:item>
+	</dataParameters>
+	<order>
+		<userSettingID>e58aeb36-e666-436e-a6bb-4f1184d7bf34</userSettingID>
+	</order>
+	<conditionalAppearance>
+		<userSettingID>3ef82904-077c-4ca8-9aaf-4140e5c6594a</userSettingID>
+	</conditionalAppearance>
+	<outputParameters/>
+	<item xsi:type="StructureItemGroup">
+		<groupItems>
+			<item xsi:type="GroupItemField">
+				<field>Поток</field>
+				<groupType>Items</groupType>
+				<periodAdditionType>None</periodAdditionType>
+				<periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</periodAdditionBegin>
+				<periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</periodAdditionEnd>
+			</item>
+		</groupItems>
+		<order>
+			<item xsi:type="OrderItemAuto"/>
+		</order>
+		<selection>
+			<item xsi:type="SelectedItemAuto"/>
+		</selection>
+		<outputParameters/>
+		<item xsi:type="StructureItemGroup">
+			<groupItems>
+				<item xsi:type="GroupItemField">
+					<field>Комиссия</field>
+					<groupType>Items</groupType>
+					<periodAdditionType>None</periodAdditionType>
+					<periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</periodAdditionBegin>
+					<periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</periodAdditionEnd>
+				</item>
+			</groupItems>
+			<order>
+				<item xsi:type="OrderItemAuto"/>
+			</order>
+			<selection>
+				<item xsi:type="SelectedItemAuto"/>
+			</selection>
+			<outputParameters/>
+			<item xsi:type="StructureItemGroup">
+				<groupItems>
+					<item xsi:type="GroupItemField">
+						<field>Этап</field>
+						<groupType>Items</groupType>
+						<periodAdditionType>None</periodAdditionType>
+						<periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</periodAdditionBegin>
+						<periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</periodAdditionEnd>
+					</item>
+				</groupItems>
+				<order>
+					<item xsi:type="OrderItemAuto"/>
+				</order>
+				<selection>
+					<item xsi:type="SelectedItemAuto"/>
+				</selection>
+				<outputParameters/>
+				<item xsi:type="StructureItemGroup">
+					<groupItems>
+						<item xsi:type="GroupItemField">
+							<field>ДатаПроведения</field>
+							<groupType>Items</groupType>
+							<periodAdditionType>None</periodAdditionType>
+							<periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</periodAdditionBegin>
+							<periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</periodAdditionEnd>
+						</item>
+					</groupItems>
+					<order>
+						<item xsi:type="OrderItemAuto"/>
+					</order>
+					<selection>
+						<item xsi:type="SelectedItemAuto"/>
+					</selection>
+					<outputParameters/>
+					<item xsi:type="StructureItemGroup">
+						<order>
+							<item xsi:type="OrderItemAuto"/>
+						</order>
+						<selection>
+							<item xsi:type="SelectedItemAuto"/>
+						</selection>
+						<outputParameters/>
+					</item>
+				</item>
+			</item>
+		</item>
+	</item>
+	<itemsUserSettingID>33747fe3-f9af-4368-90f5-8491612dbd5c</itemsUserSettingID>
+</Settings>﻿<?xml version="1.0" encoding="UTF-8"?>
+<SchemaFile xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<dataCompositionSchema xmlns="http://v8.1c.ru/8.1/data-composition-system/schema"/>
+</SchemaFile>
